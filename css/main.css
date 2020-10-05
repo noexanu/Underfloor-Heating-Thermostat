@@ -1,0 +1,128 @@
+/* 
+	http://meyerweb.com/eric/tools/css/reset/ 
+	v2.0 | 20110126
+	License: none (public domain)
+*/
+html, body, div, span, applet, object, iframe,
+h1, h2, h3, h4, h5, h6, p, blockquote, pre, a,
+abbr, acronym, address, big, cite, code, del,
+dfn, em, img, ins, kbd, q, s, samp, small,
+strike, strong, sub, sup, tt, var, b, u, i,
+center, dl, dt, dd, ol, ul, li, fieldset,
+form, label, legend, table, caption, tbody,
+tfoot, thead, tr, th, td, article, aside,
+canvas, details, embed, figure, figcaption,
+footer, header, hgroup, menu, nav, output,
+ruby, section, summary, time, mark, audio,
+video {
+  margin: 0;
+  padding: 0;
+  border: 0;
+  font-size: 100%;
+  font: inherit;
+  vertical-align: baseline;
+}
+
+/* HTML5 display-role reset for older browsers */
+article, aside, details, figcaption, figure,
+footer, header, hgroup, menu, nav, section {
+  display: block;
+}
+
+body {
+  line-height: 1;
+}
+
+ol, ul {
+  list-style: none;
+}
+
+blockquote, q {
+  quotes: none;
+}
+blockquote:after, blockquote:before, q:after, q:before {
+  content: "";
+  content: none;
+}
+
+table {
+  border-collapse: collapse;
+  border-spacing: 0;
+}
+
+@font-face {
+  font-family: "Roboto";
+  src: url("../fonts/roboto/Roboto-Medium.ttf");
+  font-style: normal;
+  font-weight: 600;
+}
+@font-face {
+  font-family: "Material Icons";
+  src: url("../fonts/materialicons/MaterialIconsOutlined-Regular.otf");
+  font-style: normal;
+  font-weight: 600;
+}
+.material-icons {
+  font-family: "Material Icons";
+  font-style: normal;
+  font-weight: 600;
+  font-size: 27.5px;
+}
+
+* {
+  font-size: 15px;
+  font-family: "Roboto";
+  font-weight: 600;
+  outline: none;
+}
+
+aside {
+  position: fixed;
+  top: 0;
+  left: -84.5vw;
+  bottom: 0;
+  width: 84.5vw;
+  overflow: scroll;
+  background-color: #fff;
+  transition: left 0.125s ease-in-out;
+}
+aside.active {
+  left: 0;
+  transition: left 0.125s ease-in-out;
+}
+aside::-webkit-scrollbar {
+  width: 0;
+  height: 0;
+}
+aside div {
+  width: 100%;
+  height: 47.75vw;
+  background-size: cover;
+  background-position: center;
+  background-repeat: no-repeat;
+  background-image: url("../img/les-3840x2160-tuman-holmi-6505.jpg");
+}
+aside nav {
+  margin-top: 2.5vw;
+  margin-bottom: 2.5vw;
+}
+aside li {
+  list-style: none;
+}
+aside li button {
+  width: 100%;
+  height: 13.35vw;
+  display: flex;
+  align-items: center;
+  color: #464646;
+  text-align: left;
+  border: none;
+  cursor: pointer;
+  background-color: rgba(0, 0, 0, 0);
+  -webkit-tap-highlight-color: rgba(0, 0, 0, 0.06);
+}
+aside li button i {
+  margin-left: 5vw;
+  margin-right: 8vw;
+  color: #8d9194;
+}

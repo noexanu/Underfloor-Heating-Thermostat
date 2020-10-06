@@ -84,7 +84,6 @@ aside {
   width: 84.5vw;
   overflow: scroll;
   background-color: #fff;
-  transition: left 0.125s ease-in-out;
 }
 aside.active {
   left: 0;

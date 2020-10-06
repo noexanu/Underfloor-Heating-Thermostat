@@ -13,7 +13,7 @@
 
 
 
-        <aside class="active">
+        <aside class="">
             <div class="">
             </div>
             <nav>
@@ -44,62 +44,72 @@
             window.addEventListener('touchend', () => console.log('touchend', event.target))
 */
 
-let aside = document.querySelector('aside');
 
-let pageWidth = window.innerWidth || document.body.clientWidth;
-let treshold = Math.max(75,Math.floor(0.01 * (pageWidth)));
+
+
+
+
+
+
 let touchStartX = 0;
 let touchStartY = 0;
 let touchEndX = 0;
 let touchEndY = 0;
+let counter=0
+
+const treshold = 75;
+const aside = document.querySelector('aside');
 const limit = Math.tan(15 * 1.5 / 180 * Math.PI);
 
 window.addEventListener('touchstart', function(event) {
     touchStartX = event.changedTouches[0].screenX;
     touchStartY = event.changedTouches[0].screenY;
 });
+window.addEventListener('touchmove', function (event) {
+        console.log(-(touchStartX - event.changedTouches[0].screenX))
+        aside.style.left = -(touchStartX - event.changedTouches[0].screenX)+'px';
+         
 
-window.addEventListener('touchend', function(event) {
-    touchEndX = event.changedTouches[0].screenX;
-    touchEndY = event.changedTouches[0].screenY;
-    swipe();
 });
+// window.addEventListener('touchend', function(event) {
+//     touchEndX = event.changedTouches[0].screenX;
+//     touchEndY = event.changedTouches[0].screenY;
+//     swipe();
+// });
 
-const swipe = () => {
-    let x = touchEndX - touchStartX;
-    let y = touchEndY - touchStartY;
-    let xy = Math.abs(x / y);
-    let yx = Math.abs(y / x);
-    if (Math.abs(x) > treshold || Math.abs(y) > treshold) {
+// const swipe = () => {
+//     let x = touchEndX - touchStartX;
+//     let y = touchEndY - touchStartY;
+//     let xy = Math.abs(x / y);
+//     let yx = Math.abs(y / x);
+//     if (Math.abs(x) > treshold || Math.abs(y) > treshold) {
 
-        if (yx <= limit) {
-            if (x < 0) {
-                if (aside.classList.contains('active')) {
-                    aside.classList.remove('active');
-                }
-                console.log("left");
-            } else {
-                if (!aside.classList.contains('active')) {
-                    aside.classList.add('active');
-                }
-                console.log("right");
-            }
-        }
-        /*
-        if (xy <= limit) {
-            if (y < 0) {
-                console.log("top");
-            } else {
-                console.log("bottom");
-            }
-        }
-        */
-    } else {
-        /*console.log("tap");*/
-    }
-}
-
-
+//         if (yx <= limit) {
+//             if (x < 0) {
+//                 if (aside.classList.contains('active')) {
+//                     aside.classList.remove('active');
+//                 }
+//                 console.log("left");
+//             } else {
+//                 if (!aside.classList.contains('active')) {
+//                     aside.classList.add('active');
+//                 }
+//                 console.log("right");
+//             }
+//         }
+//         /*
+//         if (xy <= limit) {
+//             if (y < 0) {
+//                 console.log("top");
+//             } else {
+//                 console.log("bottom");
+//             }
+//         }
+//         */
+//     } else {
+//         /*console.log("tap");*/
+//     }
+// }
 
 
 

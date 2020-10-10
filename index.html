@@ -51,26 +51,34 @@
 
 
 
+
+
+
+
 let touchStartX = 0;
 let touchStartY = 0;
 let touchEndX = 0;
 let touchEndY = 0;
-let counter=0
 
 const treshold = 75;
 const aside = document.querySelector('aside');
 const limit = Math.tan(15 * 1.5 / 180 * Math.PI);
 
+let touch
+
 window.addEventListener('touchstart', function(event) {
     touchStartX = event.changedTouches[0].screenX;
     touchStartY = event.changedTouches[0].screenY;
 });
-window.addEventListener('touchmove', function (event) {
-        console.log(-(touchStartX - event.changedTouches[0].screenX))
-        aside.style.left = -(touchStartX - event.changedTouches[0].screenX)+'px';
-         
 
-});
+const biba = (event) => {
+    touch = event.changedTouches[0];
+    //console.log(Math.round( - (touchStartX - touch.screenX)) +'px')
+    aside.style.left = Math.round( - (touchStartX - touch.screenX)) +'px';
+    window.requestAnimationFrame(biba);
+};
+window.addEventListener('touchmove', biba);
+
 // window.addEventListener('touchend', function(event) {
 //     touchEndX = event.changedTouches[0].screenX;
 //     touchEndY = event.changedTouches[0].screenY;

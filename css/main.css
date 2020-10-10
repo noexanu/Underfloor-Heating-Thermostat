@@ -86,8 +86,7 @@ aside {
   background-color: #fff;
 }
 aside.active {
-  left: 0;
-  transition: left 0.125s ease-in-out;
+  transition: 0.1s ease-in-out;
 }
 aside::-webkit-scrollbar {
   width: 0;

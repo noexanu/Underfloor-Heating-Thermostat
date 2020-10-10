@@ -25,66 +25,138 @@
             </nav>
         </aside>
         <script>
-/*
-            const mousemoveHeandler = () => {
-                console.log('mousemove', event.target)
-            };
-            window.addEventListener('mousedown', () => {
-                console.log('mousedown', event.target)
-                window.addEventListener('mousemove', mousemoveHeandler)
-            });
-            window.addEventListener('mouseup', () => {
-                console.log('mouseup', event.target)
-                window.removeEventListener('mousemove', mousemoveHeandler)
-            });
-            
 
-            window.addEventListener('touchstart', () => console.log('touchstart', event.target))
-            window.addEventListener('touchmove', () => console.log('touchmove', event.target))
-            window.addEventListener('touchend', () => console.log('touchend', event.target))
-*/
-
-
-
-
-
-
-
-
-
-
-
-
-let touchStartX = 0;
-let touchStartY = 0;
-let touchEndX = 0;
-let touchEndY = 0;
-
-const treshold = 75;
-const aside = document.querySelector('aside');
-const limit = Math.tan(15 * 1.5 / 180 * Math.PI);
-
-let touch
-
-window.addEventListener('touchstart', function(event) {
-    touchStartX = event.changedTouches[0].screenX;
-    touchStartY = event.changedTouches[0].screenY;
-});
-
-const biba = (event) => {
-    touch = event.changedTouches[0];
-    //console.log(Math.round( - (touchStartX - touch.screenX)) +'px')
-    aside.style.left = Math.round( - (touchStartX - touch.screenX)) +'px';
-    window.requestAnimationFrame(biba);
-};
-window.addEventListener('touchmove', biba);
-
-// window.addEventListener('touchend', function(event) {
-//     touchEndX = event.changedTouches[0].screenX;
-//     touchEndY = event.changedTouches[0].screenY;
-//     swipe();
+// const mousemoveHeandler = () => {
+//     console.log('mousemove', event.target)
+// };
+// window.addEventListener('mousedown', () => {
+//     console.log('mousedown', event.target)
+//     window.addEventListener('mousemove', mousemoveHeandler)
+// });
+// window.addEventListener('mouseup', () => {
+//     console.log('mouseup', event.target)
+//     window.removeEventListener('mousemove', mousemoveHeandler)
 // });
 
+
+// window.addEventListener('touchstart', () => console.log('touchstart', event.target))
+// window.addEventListener('touchmove', () => console.log('touchmove', event.target))
+// window.addEventListener('touchend', () => console.log('touchend', event.target))
+
+const getTranslateValues = (element) => {
+    const style = window.getComputedStyle(element);
+    const matrix = style['transform'] || style.webkitTransform || style.mozTransform;
+    if (matrix === 'none') {
+        return {
+            x: 0,
+            y: 0,
+            z: 0
+        }
+    }
+    const matrixType = matrix.includes('3d') ? '3d' : '2d';
+    const matrixValues = matrix.match(/matrix.*\((.+)\)/)[1].split(', ');
+    if (matrixType === '2d') {
+        return {
+            x: parseInt(matrixValues[4]),
+            y: parseInt(matrixValues[5]),
+            z: 0
+        }
+    }
+    if (matrixType === '3d') {
+        return {
+            x: parseInt(matrixValues[12]),
+            y: parseInt(matrixValues[13]),
+            z: parseInt(matrixValues[14])
+        }
+    }
+}
+
+const aside = document.querySelector('aside');
+const angle = Math.tan(15 * 1.5 / 180 * Math.PI);
+const treshold = 75;
+
+let touch;
+let touchStartX;
+let touchStartY;
+let touchEndX;
+let touchStartTime;
+let translateX = getTranslateValues(aside).x;
+
+const width = window.getComputedStyle(aside).width.replace('px','')
+console.log (width)
+
+const touchstartHandler = (event) => {
+    touchStartX = event.changedTouches[0].screenX;
+    touchStartY = event.changedTouches[0].screenY;
+    touchStartTime = Date.now();
+    translateX = getTranslateValues(aside).x;
+    aside.classList.remove('active');
+};
+
+const touchmoveHandler = (event) => {
+    //Если не запрещено перемещение
+    if (!aside.classList.contains('false')) {
+        touch = event.changedTouches[0];
+        //Если перемещение разрешено
+        if (aside.classList.contains('true')) {
+            const value = translateX + Math.round(touch.screenX - touchStartX);
+            if (value >= 0 && value <= width) {
+                aside.style.transform = `translateX(${value}px)`;
+            } else {
+                if (value < 0) {
+                    aside.style.transform = 'translateX(0px)';
+                } else {
+                    aside.style.transform = `translateX(${width}px)`;
+                }
+            }
+            
+        } else {
+            const x = touch.screenX - touchStartX;
+            const y = touch.screenY - touchStartY;
+            //Если угол лежит в требуемом диапазоне
+            if (Math.abs(y / x) <= angle) {
+                aside.classList.add('true');
+            } else {
+                aside.classList.add('false');
+            }
+        }
+    }
+};
+
+const touchendHandler = (event) => {
+    touchEndX = event.changedTouches[0].screenX;
+    aside.classList.add('active');
+    if (Date.now() - touchStartTime <= 200 && Math.abs(touchEndX - touchStartX) >= treshold) {
+        console.log("swipe")
+        if (touchEndX - touchStartX > 0) {
+            aside.style.transform = `translateX(${width}px)`;
+        } else {
+            aside.style.transform = 'translateX(0px)';
+        }
+    } else {
+        if (getTranslateValues(aside).x >= width / 2) {
+            aside.style.transform = `translateX(${width}px)`;
+        } else {
+            aside.style.transform = 'translateX(0px)';
+        }
+    }
+    aside.classList.remove('true');
+    aside.classList.remove('false');
+
+
+                
+
+
+
+
+    // touchEndY = event.changedTouches[0].screenY;
+    // swipe();
+}
+
+window.addEventListener('touchstart', touchstartHandler);
+window.addEventListener('touchmove', touchmoveHandler);
+window.addEventListener('touchend', touchendHandler);
+window.addEventListener('touchcancel', touchendHandler);
 // const swipe = () => {
 //     let x = touchEndX - touchStartX;
 //     let y = touchEndY - touchStartY;
@@ -118,10 +190,6 @@ window.addEventListener('touchmove', biba);
 //         /*console.log("tap");*/
 //     }
 // }
-
-
-
         </script>
-        
     </body>
 </html>
